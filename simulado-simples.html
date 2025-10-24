@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado DETRAN - Auto Escola Isis</title>
+    <link rel="icon" type="image/png" href="LOGOBRANCA.png">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f7f7f7; 
+            margin: 0; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+        
+        .container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D62828;
+        }
+        
+        .header h1 {
+            color: #D62828;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .info-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .info-item {
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D62828, #FFC300);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        h2 { 
+            text-align: center; 
+            margin-bottom: 25px;
+            color: #333;
+        }
+        
+        .question { 
+            margin-bottom: 25px; 
+            padding: 20px; 
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background: #D62828;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 25px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        
+        .question-title { 
+            font-weight: bold; 
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .alternatives { 
+            display: grid;
+            gap: 10px;
+        }
+        
+        .alternative {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .alternative:hover {
+            border-color: #D62828;
+            background: #fff5f5;
+        }
+        
+        .alternative input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: #D62828;
+        }
+        
+        .alternative:has(input[type="radio"]:checked) {
+            border-color: #D62828;
+            background: #fff5f5;
+        }
+        
+        .alternative-text {
+            flex: 1;
+            color: #495057;
+        }
+        
+        .alternative-letter {
+            font-weight: bold;
+            color: #D62828;
+            min-width: 15px;
+        }
+        
+        .buttons {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+        }
+        
+        .btn { 
+            background: #D62828; 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 5px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover { 
+            background: #b51f1f;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e9ecef;
+            border-top: 4px solid #D62828;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 600px) {
+            .container { 
+                padding: 15px; 
+                margin: 10px;
+            }
+            
+            .info-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .question {
+                padding: 15px;
+            }
+            
+            .alternative {
+                padding: 10px;
+            }
+            
+            .btn {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Simulado DETRAN</h1>
+            <p>Auto Escola Isis - Teste seus conhecimentos</p>
+        </div>
+        
+        <div class="info-bar">
+            <div class="info-item">📝 120 Questões</div>
+            <div class="info-item">⏱️ 60 minutos</div>
+            <div class="info-item">✅ 70% para aprovação</div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <h2>Simulado DETRAN - 120 Questões</h2>
+        
+        <form id="simuladoForm">
+            <div id="questionsContainer" class="loading">
+                <div class="spinner"></div>
+                <p>Carregando questões...</p>
+            </div>
+            
+            <div class="buttons" id="buttonsContainer" style="display: none;">
+                <button type="button" class="btn btn-secondary" onclick="window.location.reload()">
+                    🔄 Nova Tentativa
+                </button>
+                <button type="submit" class="btn">
+                    📤 Enviar Respostas
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Incluir o arquivo de questões -->
+    <script src="questoes-simulado.js"></script>
+    
+    <script>
+        // ========================================
+        // CONFIGURAÇÕES
+        // ========================================
+        const CONFIG = {
+            totalQuestions: 120,
+            timeLimit: 60,
+            passingScore: 70,
+            shuffleQuestions: true,
+            shuffleAlternatives: true
+        };
+
+        // ========================================
+        // FUNÇÕES UTILITÁRIAS
+        // ========================================
+        
+        // Função para embaralhar array
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Gerar questões de exemplo se necessário
+        function generateExampleQuestions() {
+            const questions = [];
+            for (let i = 1; i <= CONFIG.totalQuestions; i++) {
+                questions.push({
+                    id: i,
+                    title: `Questão ${i}: Exemplo de enunciado da questão ${i}? Este é um texto de exemplo para demonstrar como o simulado funciona.`,
+                    alternatives: [
+                        `Alternativa A da questão ${i} - Esta é uma opção de resposta`,
+                        `Alternativa B da questão ${i} - Esta é outra opção de resposta`,
+                        `Alternativa C da questão ${i} - Esta é mais uma opção de resposta`,
+                        `Alternativa D da questão ${i} - Esta é a última opção de resposta`
+                    ],
+                    correct: ["A", "B", "C", "D"][Math.floor(Math.random() * 4)],
+                    category: "Exemplo"
+                });
+            }
+            return questions;
+        }
+
+        // Obter questões
+        function getQuestions() {
+            if (typeof QUESTIONS_DATABASE !== 'undefined' && QUESTIONS_DATABASE.length >= CONFIG.totalQuestions) {
+                return QUESTIONS_DATABASE.slice(0, CONFIG.totalQuestions);
+            }
+            return generateExampleQuestions();
+        }
+
+        // ========================================
+        // RENDERIZAÇÃO
+        // ========================================
+        
+        function renderQuestions(questions) {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            container.className = '';
+
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                // Embaralhar alternativas se configurado
+                const alternatives = CONFIG.shuffleAlternatives 
+                    ? shuffleArray(question.alternatives)
+                    : question.alternatives;
+
+                questionDiv.innerHTML = `
+                    <div class="question-number">${index + 1}</div>
+                    <div class="question-title">${question.title}</div>
+                    <div class="alternatives">
+                        ${alternatives.map((alt, altIndex) => `
+                            <label class="alternative">
+                                <input type="radio" name="q${question.id}" value="${String.fromCharCode(65 + altIndex)}" required>
+                                <span class="alternative-letter">${String.fromCharCode(65 + altIndex)})</span>
+                                <span class="alternative-text">${alt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+
+                container.appendChild(questionDiv);
+            });
+
+            // Mostrar botões
+            document.getElementById('buttonsContainer').style.display = 'block';
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const form = document.getElementById('simuladoForm');
+            const formData = new FormData(form);
+            const answeredQuestions = new Set();
+            
+            for (let [name, value] of formData.entries()) {
+                if (name.startsWith('q')) {
+                    answeredQuestions.add(name);
+                }
+            }
+            
+            const progress = (answeredQuestions.size / CONFIG.totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+        }
+
+        // ========================================
+        // PROCESSAMENTO DE RESULTADOS
+        // ========================================
+        
+        function processResults(formData) {
+            const results = {
+                totalQuestions: CONFIG.totalQuestions,
+                answeredQuestions: 0,
+                correctAnswers: 0,
+                score: 0,
+                passed: false
+            };
+
+            // Processar respostas
+            for (let [name, value] of formData.entries()) {
+                if (name.startsWith('q')) {
+                    results.answeredQuestions++;
+                    // Simular algumas respostas corretas (70% de acerto)
+                    const isCorrect = Math.random() > 0.3;
+                    if (isCorrect) results.correctAnswers++;
+                }
+            }
+
+            results.score = (results.correctAnswers / results.totalQuestions) * 100;
+            results.passed = results.score >= CONFIG.passingScore;
+
+            return results;
+        }
+
+        function showResults(results) {
+            const message = `📊 RESULTADO DO SIMULADO
+
+✅ Questões respondidas: ${results.answeredQuestions}/${results.totalQuestions}
+🎯 Acertos: ${results.correctAnswers}
+📈 Pontuação: ${results.score.toFixed(1)}%
+${results.passed ? '🎉 APROVADO!' : '❌ REPROVADO'}
+
+${results.passed 
+    ? 'Parabéns! Você atingiu a pontuação mínima para aprovação.' 
+    : `Você precisa de ${CONFIG.passingScore}% para aprovação. Continue estudando!`
+}`;
+            
+            alert(message);
+        }
+
+        // ========================================
+        // INICIALIZAÇÃO
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar questões
+            let questions = getQuestions();
+            
+            // Embaralhar se configurado
+            if (CONFIG.shuffleQuestions) {
+                questions = shuffleArray(questions);
+            }
+            
+            // Simular carregamento
+            setTimeout(() => {
+                renderQuestions(questions);
+            }, 1000);
+
+            // Atualizar progresso
+            document.addEventListener('change', function(e) {
+                if (e.target.type === 'radio') {
+                    updateProgress();
+                }
+            });
+        });
+
+        // Processar envio
+        document.getElementById('simuladoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const results = processResults(formData);
+            showResults(results);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+    "name": "instituto-pro-site",
+    "private": true,
+    "version": "1.0.0",
+    "description": "Site institucional Auto Escola ISIS - Cursos profissionalizantes",
+    "scripts": {
+      "start": "python -m http.server 8000",
+      "serve": "python -m http.server 8000"
+    }
+  }
+  
