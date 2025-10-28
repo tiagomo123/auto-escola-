@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado DETRAN - 3 Provas - Auto Escola Isis</title>
+    <link rel="icon" type="image/png" href="LOGOBRANCA.png">
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f7f7f7; 
+            margin: 0; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+        
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            background: #fff; 
+            padding: 30px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #D62828;
+        }
+        
+        .header h1 {
+            color: #D62828;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .info-bar {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .info-item {
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        .progress-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .progress-text {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #D62828;
+        }
+        
+        .progress-percentage {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #28a745;
+        }
+        
+        .progress-bar {
+            background: #e9ecef;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D62828, #FFC300);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-details {
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .prova-header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: linear-gradient(135deg, #D62828, #FFC300);
+            color: white;
+            border-radius: 8px;
+        }
+        
+        .prova-header h2 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        
+        .prova-header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .question { 
+            margin-bottom: 25px; 
+            padding: 20px; 
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .question-number {
+            display: inline-block;
+            background: #D62828;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .question-title { 
+            font-weight: bold; 
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .alternatives { 
+            display: grid;
+            gap: 10px;
+        }
+        
+        .alternative {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .alternative:hover {
+            border-color: #D62828;
+            background: #fff5f5;
+        }
+        
+        .alternative input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+            accent-color: #D62828;
+        }
+        
+        .alternative:has(input[type="radio"]:checked) {
+            border-color: #D62828;
+            background: #fff5f5;
+        }
+        
+        .alternative-text {
+            flex: 1;
+            color: #495057;
+        }
+        
+        .alternative-letter {
+            font-weight: bold;
+            color: #D62828;
+            min-width: 15px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .btn { 
+            background: #D62828; 
+            color: white; 
+            border: none; 
+            padding: 15px 30px; 
+            border-radius: 5px; 
+            font-size: 1.1em; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+            min-width: 150px;
+        }
+        
+        .btn:hover { 
+            background: #b51f1f;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-success {
+            background: #28a745;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e9ecef;
+            border-top: 4px solid #D62828;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .results-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .results-summary h3 {
+            color: #D62828;
+            margin-bottom: 15px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .result-item {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .result-item h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .result-item p {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .result-item.passed p {
+            color: #28a745;
+        }
+        
+        .result-item.failed p {
+            color: #dc3545;
+        }
+        
+        @media (max-width: 600px) {
+            .container { 
+                padding: 15px; 
+                margin: 10px;
+            }
+            
+            .info-bar {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .progress-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .question {
+                padding: 15px;
+            }
+            
+            .alternative {
+                padding: 10px;
+            }
+            
+            .navigation-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Simulado DETRAN - 3 Provas</h1>
+            <p>Auto Escola Isis - Teste seus conhecimentos em 3 etapas</p>
+        </div>
+        
+        <div class="info-bar">
+            <div class="info-item">📝 120 Questões (40 por prova)</div>
+            <div class="info-item">⏱️ 60 minutos total</div>
+            <div class="info-item">✅ 70% para aprovação</div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-info">
+                <div class="progress-text" id="progressText">Prova 1 de 3</div>
+                <div class="progress-percentage" id="progressPercentage">0% concluído</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+            <div class="progress-details" id="progressDetails">
+                Questões respondidas: 0/40 | Prova atual: 1/3
+            </div>
+        </div>
+        
+        <form id="simuladoForm">
+            <!-- Prova 1 -->
+            <div id="prova1" class="prova-section">
+                <div class="prova-header">
+                    <h2>📋 Prova 1 - Questões 1 a 40</h2>
+                    <p>Legislação de Trânsito, Sinalização e Primeiros Socorros</p>
+                </div>
+                <div id="questionsContainer1" class="loading">
+                    <div class="spinner"></div>
+                    <p>Carregando questões da Prova 1...</p>
+                </div>
+            </div>
+            
+            <!-- Prova 2 -->
+            <div id="prova2" class="prova-section hidden">
+                <div class="prova-header">
+                    <h2>📋 Prova 2 - Questões 41 a 80</h2>
+                    <p>Mecânica Básica, Meio Ambiente e Cidadania</p>
+                </div>
+                <div id="questionsContainer2" class="loading">
+                    <div class="spinner"></div>
+                    <p>Carregando questões da Prova 2...</p>
+                </div>
+            </div>
+            
+            <!-- Prova 3 -->
+            <div id="prova3" class="prova-section hidden">
+                <div class="prova-header">
+                    <h2>📋 Prova 3 - Questões 81 a 120</h2>
+                    <p>Questões Diversas e Revisão Geral</p>
+                </div>
+                <div id="questionsContainer3" class="loading">
+                    <div class="spinner"></div>
+                    <p>Carregando questões da Prova 3...</p>
+                </div>
+            </div>
+            
+            <!-- Resultados -->
+            <div id="resultsSection" class="hidden">
+                <div class="results-summary">
+                    <h3>📊 Resultado Final do Simulado</h3>
+                    <div class="results-grid" id="resultsGrid">
+                        <!-- Resultados serão inseridos aqui -->
+                    </div>
+                    <div class="navigation-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.reload()">
+                            🔄 Nova Tentativa
+                        </button>
+                        <button type="button" class="btn" onclick="showDetailedResults()">
+                            📋 Ver Detalhes
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="navigation-buttons" id="navigationButtons" style="display: none;">
+                <button type="button" class="btn btn-secondary" id="prevProvaBtn" onclick="previousProva()" disabled>
+                    ← Prova Anterior
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="window.location.reload()">
+                    🔄 Nova Tentativa
+                </button>
+                <button type="button" class="btn" id="nextProvaBtn" onclick="nextProva()">
+                    Próxima Prova →
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Incluir o arquivo de questões -->
+    <script src="questoes-simulado.js"></script>
+    
+    <script>
+        // ========================================
+        // CONFIGURAÇÕES
+        // ========================================
+        const CONFIG = {
+            totalQuestions: 120,
+            questionsPerProva: 40,
+            totalProvas: 3,
+            timeLimit: 60,
+            passingScore: 70,
+            shuffleQuestions: true,
+            shuffleAlternatives: true
+        };
+
+        // ========================================
+        // VARIÁVEIS GLOBAIS
+        // ========================================
+        let currentProva = 1;
+        let allQuestions = [];
+        let provasData = [];
+        let results = {
+            provas: [],
+            totalAnswered: 0,
+            totalCorrect: 0,
+            overallScore: 0,
+            passed: false
+        };
+
+        // ========================================
+        // FUNÇÕES UTILITÁRIAS
+        // ========================================
+        
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateExampleQuestions() {
+            const questions = [];
+            for (let i = 1; i <= CONFIG.totalQuestions; i++) {
+                questions.push({
+                    id: i,
+                    title: `Questão ${i}: Exemplo de enunciado da questão ${i}? Este é um texto de exemplo para demonstrar como o simulado funciona.`,
+                    alternatives: [
+                        `Alternativa A da questão ${i} - Esta é uma opção de resposta`,
+                        `Alternativa B da questão ${i} - Esta é outra opção de resposta`,
+                        `Alternativa C da questão ${i} - Esta é mais uma opção de resposta`,
+                        `Alternativa D da questão ${i} - Esta é a última opção de resposta`
+                    ],
+                    correct: ["A", "B", "C", "D"][Math.floor(Math.random() * 4)],
+                    category: "Exemplo"
+                });
+            }
+            return questions;
+        }
+
+        function getQuestions() {
+            if (typeof QUESTIONS_DATABASE !== 'undefined' && QUESTIONS_DATABASE.length >= CONFIG.totalQuestions) {
+                return QUESTIONS_DATABASE.slice(0, CONFIG.totalQuestions);
+            }
+            return generateExampleQuestions();
+        }
+
+        function divideQuestionsIntoProvas(questions) {
+            const provas = [];
+            for (let i = 0; i < CONFIG.totalProvas; i++) {
+                const startIndex = i * CONFIG.questionsPerProva;
+                const endIndex = startIndex + CONFIG.questionsPerProva;
+                provas.push({
+                    number: i + 1,
+                    questions: questions.slice(startIndex, endIndex),
+                    answered: 0,
+                    correct: 0,
+                    score: 0,
+                    passed: false
+                });
+            }
+            return provas;
+        }
+
+        // ========================================
+        // RENDERIZAÇÃO
+        // ========================================
+        
+        function renderProva(provaNumber) {
+            const container = document.getElementById(`questionsContainer${provaNumber}`);
+            const prova = provasData[provaNumber - 1];
+            
+            container.innerHTML = '';
+            container.className = '';
+
+            prova.questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                const alternatives = CONFIG.shuffleAlternatives 
+                    ? shuffleArray(question.alternatives)
+                    : question.alternatives;
+
+                const globalQuestionNumber = (provaNumber - 1) * CONFIG.questionsPerProva + index + 1;
+
+                questionDiv.innerHTML = `
+                    <div class="question-number">${globalQuestionNumber}</div>
+                    <div class="question-title">${question.title}</div>
+                    <div class="alternatives">
+                        ${alternatives.map((alt, altIndex) => `
+                            <label class="alternative">
+                                <input type="radio" name="q${question.id}" value="${String.fromCharCode(65 + altIndex)}" required>
+                                <span class="alternative-letter">${String.fromCharCode(65 + altIndex)})</span>
+                                <span class="alternative-text">${alt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+
+                container.appendChild(questionDiv);
+            });
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const form = document.getElementById('simuladoForm');
+            const formData = new FormData(form);
+            const answeredQuestions = new Set();
+            
+            for (let [name, value] of formData.entries()) {
+                if (name.startsWith('q')) {
+                    answeredQuestions.add(name);
+                }
+            }
+            
+            // Atualizar progresso da prova atual
+            const currentProvaData = provasData[currentProva - 1];
+            const currentProvaAnswered = currentProvaData.questions.filter(q => 
+                answeredQuestions.has(`q${q.id}`)
+            ).length;
+            
+            currentProvaData.answered = currentProvaAnswered;
+            
+            // Calcular progresso geral
+            const totalAnswered = provasData.reduce((sum, prova) => sum + prova.answered, 0);
+            const totalQuestions = CONFIG.totalQuestions;
+            const overallProgress = (totalAnswered / totalQuestions) * 100;
+            
+            // Atualizar elementos da interface
+            document.getElementById('progressText').textContent = `Prova ${currentProva} de ${CONFIG.totalProvas}`;
+            document.getElementById('progressPercentage').textContent = `${Math.round(overallProgress)}% concluído`;
+            document.getElementById('progressBar').style.width = `${overallProgress}%`;
+            document.getElementById('progressDetails').textContent = 
+                `Questões respondidas: ${currentProvaAnswered}/${CONFIG.questionsPerProva} | Prova atual: ${currentProva}/${CONFIG.totalProvas}`;
+            
+            // Atualizar botões de navegação
+            updateNavigationButtons();
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevProvaBtn');
+            const nextBtn = document.getElementById('nextProvaBtn');
+            
+            prevBtn.disabled = currentProva === 1;
+            
+            if (currentProva === CONFIG.totalProvas) {
+                nextBtn.textContent = '📤 Finalizar Simulado';
+                nextBtn.className = 'btn btn-success';
+            } else {
+                nextBtn.textContent = 'Próxima Prova →';
+                nextBtn.className = 'btn';
+            }
+        }
+
+        function showProva(provaNumber) {
+            // Esconder todas as provas
+            for (let i = 1; i <= CONFIG.totalProvas; i++) {
+                document.getElementById(`prova${i}`).classList.add('hidden');
+            }
+            
+            // Mostrar prova atual
+            document.getElementById(`prova${provaNumber}`).classList.remove('hidden');
+            currentProva = provaNumber;
+            
+            updateProgress();
+        }
+
+        // ========================================
+        // NAVEGAÇÃO ENTRE PROVAS
+        // ========================================
+        
+        function nextProva() {
+            if (currentProva < CONFIG.totalProvas) {
+                showProva(currentProva + 1);
+            } else {
+                finishSimulado();
+            }
+        }
+
+        function previousProva() {
+            if (currentProva > 1) {
+                showProva(currentProva - 1);
+            }
+        }
+
+        // ========================================
+        // PROCESSAMENTO DE RESULTADOS
+        // ========================================
+        
+        function processResults() {
+            const form = document.getElementById('simuladoForm');
+            const formData = new FormData(form);
+            
+            // Resetar resultados
+            results = {
+                provas: [],
+                totalAnswered: 0,
+                totalCorrect: 0,
+                overallScore: 0,
+                passed: false
+            };
+            
+            // Processar cada prova
+            provasData.forEach((prova, index) => {
+                let correctAnswers = 0;
+                let answeredQuestions = 0;
+                
+                prova.questions.forEach(question => {
+                    const answer = formData.get(`q${question.id}`);
+                    if (answer) {
+                        answeredQuestions++;
+                        if (answer === question.correct) {
+                            correctAnswers++;
+                        }
+                    }
+                });
+                
+                const score = answeredQuestions > 0 ? (correctAnswers / answeredQuestions) * 100 : 0;
+                const passed = score >= CONFIG.passingScore;
+                
+                results.provas.push({
+                    number: index + 1,
+                    answered: answeredQuestions,
+                    correct: correctAnswers,
+                    score: score,
+                    passed: passed
+                });
+                
+                results.totalAnswered += answeredQuestions;
+                results.totalCorrect += correctAnswers;
+            });
+            
+            results.overallScore = results.totalAnswered > 0 ? 
+                (results.totalCorrect / results.totalAnswered) * 100 : 0;
+            results.passed = results.overallScore >= CONFIG.passingScore;
+        }
+
+        function showResults() {
+            processResults();
+            
+            // Esconder todas as provas e navegação
+            for (let i = 1; i <= CONFIG.totalProvas; i++) {
+                document.getElementById(`prova${i}`).classList.add('hidden');
+            }
+            document.getElementById('navigationButtons').classList.add('hidden');
+            
+            // Mostrar resultados
+            const resultsSection = document.getElementById('resultsSection');
+            resultsSection.classList.remove('hidden');
+            
+            // Preencher grid de resultados
+            const resultsGrid = document.getElementById('resultsGrid');
+            resultsGrid.innerHTML = '';
+            
+            results.provas.forEach(prova => {
+                const resultItem = document.createElement('div');
+                resultItem.className = `result-item ${prova.passed ? 'passed' : 'failed'}`;
+                resultItem.innerHTML = `
+                    <h4>Prova ${prova.number}</h4>
+                    <p>${prova.score.toFixed(1)}%</p>
+                    <small>${prova.correct}/${prova.answered} acertos</small>
+                `;
+                resultsGrid.appendChild(resultItem);
+            });
+            
+            // Adicionar resultado geral
+            const overallItem = document.createElement('div');
+            overallItem.className = `result-item ${results.passed ? 'passed' : 'failed'}`;
+            overallItem.innerHTML = `
+                <h4>Resultado Geral</h4>
+                <p>${results.overallScore.toFixed(1)}%</p>
+                <small>${results.totalCorrect}/${results.totalAnswered} acertos</small>
+            `;
+            resultsGrid.appendChild(overallItem);
+        }
+
+        function finishSimulado() {
+            showResults();
+        }
+
+        function showDetailedResults() {
+            let message = `📊 RESULTADO DETALHADO DO SIMULADO\n\n`;
+            
+            results.provas.forEach(prova => {
+                message += `📋 Prova ${prova.number}:\n`;
+                message += `   ✅ Acertos: ${prova.correct}/${prova.answered}\n`;
+                message += `   📈 Pontuação: ${prova.score.toFixed(1)}%\n`;
+                message += `   ${prova.passed ? '🎉 APROVADO' : '❌ REPROVADO'}\n\n`;
+            });
+            
+            message += `📊 RESULTADO GERAL:\n`;
+            message += `   ✅ Total de acertos: ${results.totalCorrect}/${results.totalAnswered}\n`;
+            message += `   📈 Pontuação geral: ${results.overallScore.toFixed(1)}%\n`;
+            message += `   ${results.passed ? '🎉 APROVADO NO SIMULADO!' : '❌ REPROVADO NO SIMULADO'}\n\n`;
+            
+            message += results.passed 
+                ? 'Parabéns! Você atingiu a pontuação mínima para aprovação.' 
+                : `Você precisa de ${CONFIG.passingScore}% para aprovação. Continue estudando!`;
+            
+            alert(message);
+        }
+
+        // ========================================
+        // INICIALIZAÇÃO
+        // ========================================
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar questões
+            allQuestions = getQuestions();
+            
+            // Embaralhar se configurado
+            if (CONFIG.shuffleQuestions) {
+                allQuestions = shuffleArray(allQuestions);
+            }
+            
+            // Dividir em provas
+            provasData = divideQuestionsIntoProvas(allQuestions);
+            
+            // Renderizar primeira prova
+            setTimeout(() => {
+                renderProva(1);
+                document.getElementById('navigationButtons').style.display = 'flex';
+            }, 1000);
+
+            // Atualizar progresso
+            document.addEventListener('change', function(e) {
+                if (e.target.type === 'radio') {
+                    updateProgress();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

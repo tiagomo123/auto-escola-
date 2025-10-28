@@ -401,32 +401,258 @@ body.dark-mode .dark-logo {
     background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
     padding: var(--spacing-xxl) 0;
     text-align: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.hero-content {
+/* =================================
+   TÍTULO DE BOAS-VINDAS
+   ================================= */
+.hero-welcome {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInDown 1s ease-out 0.5s forwards;
+}
+
+.welcome-title {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, var(--color-red), var(--color-yellow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* =================================
+   ANIMAÇÃO DO CARRO
+   ================================= */
+.car-animation-container {
+    position: absolute;
+    top: 30%;
+    left: -100px;
+    width: 100%;
+    height: 100px;
+    z-index: 5;
+}
+
+.animated-car {
+    position: absolute;
+    width: 80px;
+    height: 40px;
+    color: var(--color-red);
+    animation: carDriveIn 3s ease-in-out forwards;
+    opacity: 0;
+}
+
+.car-image {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes carDriveIn {
+    0% {
+        left: -100px;
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    80% {
+        left: calc(100% - 100px);
+        transform: scale(1);
+    }
+    100% {
+        left: calc(100% - 100px);
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* =================================
+   CARROSSEL DE IMAGENS
+   ================================= */
+.carousel-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
     max-width: 800px;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 3.5s forwards;
+    z-index: 8;
+}
+
+.carousel-wrapper {
+    position: relative;
+    background: var(--bg-primary);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    padding: 40px 20px;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 500%;
+}
+
+.carousel-slide {
+    width: 20%;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 20px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.slide-image {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--color-red), var(--color-yellow));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.slide-image svg {
+    width: 60px;
+    height: 60px;
+}
+
+.carousel-slide h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.carousel-slide p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 300px;
     margin: 0 auto;
 }
 
-.hero-title {
-    font-size: 48px;
-    font-weight: 700;
-    line-height: var(--line-height-heading);
-    margin-bottom: var(--spacing-md);
-    color: var(--text-primary);
-}
-
-.hero-subtitle {
-    font-size: 20px;
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-lg);
-}
-
-.hero-buttons {
+/* =================================
+   NAVEGAÇÃO DO CARROSSEL
+   ================================= */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: var(--color-red);
+    color: var(--color-white);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
     display: flex;
-    gap: var(--spacing-sm);
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-prev {
+    left: 20px;
+}
+
+.carousel-next {
+    right: 20px;
+}
+
+.carousel-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* =================================
+   INDICADORES DO CARROSSEL
+   ================================= */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.indicator.active {
+    background: var(--color-red);
+    transform: scale(1.2);
+}
+
+.indicator:hover {
+    background: var(--color-yellow);
+    transform: scale(1.1);
+}
+
+
+/* =================================
+   ANIMAÇÕES GERAIS
+   ================================= */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* =================================
@@ -1223,16 +1449,66 @@ section {
         transform: rotate(-45deg) translate(7px, -7px);
     }
 
-    .hero-title {
-        font-size: 28px;
+    /* =================================
+       RESPONSIVIDADE HERO SECTION
+       ================================= */
+    .welcome-title {
+        font-size: 32px;
     }
 
-    .hero-subtitle {
-        font-size: 16px;
+    .car-animation-container {
+        top: 25%;
     }
 
-    .hero-buttons {
-        flex-direction: column;
+    .animated-car {
+        width: 60px;
+        height: 30px;
+    }
+
+    .carousel-container {
+        width: 95%;
+        max-width: 400px;
+        top: 50%;
+    }
+
+    .carousel-wrapper {
+        padding: 30px 15px;
+    }
+
+    .slide-image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .slide-image svg {
+        width: 40px;
+        height: 40px;
+    }
+
+    .carousel-slide h3 {
+        font-size: 18px;
+    }
+
+    .carousel-slide p {
+        font-size: 14px;
+    }
+
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .carousel-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .carousel-prev {
+        left: 10px;
+    }
+
+    .carousel-next {
+        right: 10px;
     }
 
     .section-title {
